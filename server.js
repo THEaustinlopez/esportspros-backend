@@ -40,10 +40,16 @@ app.use(
 mongoose.Promise = global.Promise;
 
 const connectDB = async () => {
-  await mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(
+    process.env.MONGODB_URI,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
   console.log("Db connected");
 };
 
