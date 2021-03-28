@@ -2,25 +2,25 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Players = new Schema({
+  player_ep_rank: {
+    type: Number,
+  },
   player_name: {
     type: String,
   },
   player_position: {
     type: String,
   },
-  player_age: {
-    type: Number,
-  },
   player_team: {
     type: String,
   },
-  player_ep_rank: {
+  player_elims: {
     type: Number,
   },
-  player_in_game_rank: {
+  player_healing: {
     type: Number,
   },
-  player_consistency_rating: {
+  player_deaths: {
     type: Number,
   },
   player_risk: {

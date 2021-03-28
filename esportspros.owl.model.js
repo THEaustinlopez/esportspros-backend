@@ -1,13 +1,38 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var owlSchema = new Schema({
-  //   name: { type: String, Required:  'Product name cannot be left blank.' },
-  //   price:    { type: String,     Required:  'Product price cannot be left blank.'},
-  //   category: { type: String ,    Required:  'Product category cannot be left blank'},
-  //   description: { type: String },
-  //   manufacturer: { type: String }
+let Owl2020 = new Schema({
+  start_time: {
+    type: String,
+  },
+  esports_match_id: {
+    type: Number,
+  },
+  tournament_title: {
+    type: String,
+  },
+  map_type: {
+    type: String,
+  },
+  map_name: {
+    type: String,
+  },
+  player_name: {
+    type: String,
+  },
+  team_name: {
+    type: String,
+  },
+  stat_name: {
+    type: String,
+  },
+  hero_name: {
+    type: String,
+  },
+  stat_amount: {
+    type: Number,
+  },
 });
 
-module.exports = mongoose.model("owl", owlSchema);
+module.exports = mongoose.model("Owl2020", Owl2020);

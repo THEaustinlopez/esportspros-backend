@@ -1,16 +1,27 @@
 const express = require("express");
+const path = require("path");
+var csv = require("fast-csv");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 var session = require("express-session");
 var flash = require("connect-flash");
+var fs = require("fs");
+
 const mongoose = require("mongoose");
+// const owlStatsRoutes = express.Router();
 const playersRoutes = express.Router();
 const teamsRoutes = express.Router();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 let Players = require("./esportspros.players.model");
 let Teams = require("./esportspros.teams.model");
+
+// var Owl = mongoose.model("Owl");
+
+var csvfile = "./csv/owl_2020_1.csv";
+
+var stream = fs.createReadStream(csvfile);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -28,10 +39,14 @@ app.use(
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect("mongodb://127.0.0.1:27017/esportspros", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  //process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/esportspros",
+  "mongodb+srv://Austin:KdND3pfsprtOrMEx@cluster0.giapc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 const connection = mongoose.connection;
 
 connection.once("open", function () {
@@ -91,6 +106,12 @@ playersRoutes.route("/update/:id").post(function (req, res) {
   });
 });
 
+playersRoutes.route("/delete/:id").delete(function (req, res) {
+  Players.findById(req.params.id)
+    .then((player) => player.remove().then(() => res.json({ success: true })))
+    .catch((err) => res.status(404).json({ success: false }));
+});
+
 //End Points for Teams
 teamsRoutes.route("/").get(function (req, res) {
   Teams.find(function (err, teams) {
@@ -140,8 +161,29 @@ teamsRoutes.route("/update/:id").post(function (req, res) {
   });
 });
 
+teamsRoutes.route("/delete/:id").delete(function (req, res) {
+  Teams.findById(req.params.id)
+    .then((team) => team.remove().then(() => res.json({ success: true })))
+    .catch((err) => res.status(404).json({ success: false }));
+});
+
+// Import OWL CSV
+// owlStatsRoutes.route("/").get(function (req, res, next) {
+//   res.render("index", { title: "OWl 2020 Stats" });
+// });
+
 app.use("/Players", playersRoutes);
 app.use("/Teams", teamsRoutes);
+// app.use("/Owl2020", owlStatsRoutes);
+
+// if (process.env.NODE_ENV === "production") {
+// }
+
+app.use(express.static(path.join("./backend/", "build")));
+
+app.get("/", function (req, res) {
+  res.sendFile(path.join("./backend/", "build", "index.html"));
+});
 
 app.listen(PORT, function () {
   console.log("Server is runnng on Port " + PORT);
