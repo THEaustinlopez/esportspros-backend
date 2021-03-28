@@ -39,18 +39,15 @@ app.use(
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(
-  process.env.MONGODB_URI,
-  {
+const connectDB = async () => {
+  await mongoose.connect({
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  }
-);
-const connection = mongoose.connection;
+  });
+  console.log("Db connected");
+};
 
-connection.once("open", function () {
-  console.log("MongoDB batabase connection established successfully!");
-});
+connectDB();
 
 //End Points for Players
 playersRoutes.route("/").get(function (req, res) {
@@ -178,11 +175,11 @@ app.use("/Teams", teamsRoutes);
 // if (process.env.NODE_ENV === "production") {
 // }
 
-app.use(express.static(path.join("./backend/", "build")));
+// app.use(express.static(path.join("./backend/", "build")));
 
-app.get("/", function (req, res) {
-  res.sendFile(path.join("./backend/", "build", "index.html"));
-});
+// app.get("/", function (req, res) {
+//   res.sendFile(path.join("./backend/", "build", "index.html"));
+// });
 
 app.listen(PORT, function () {
   console.log("Server is runnng on Port " + PORT);
