@@ -81,7 +81,8 @@ playersRoutes.route("/add").post(function (req, res) {
       res.status(200).json({ player: "Player added successfully" });
     })
     .catch((err) => {
-      res.status(400).send("Adding new player failed!");
+      console.log(err)
+      res.status(400).send("Adding new player failed!", err);
     });
 });
 
