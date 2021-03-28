@@ -137,10 +137,11 @@ teamsRoutes.route("/add").post(function (req, res) {
   team
     .save()
     .then((team) => {
-      res.status(200).json({ team: "Team added successfully" });
+      res.status(200).json({ team,  "Team added successfully" });
     })
     .catch((err) => {
-      res.status(400).send("Adding new team failed!");
+      console.log(err)
+      res.status(400).send("Adding new team failed!", err);
     });
 });
 
