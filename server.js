@@ -40,8 +40,7 @@ app.use(
 mongoose.Promise = global.Promise;
 
 mongoose.connect(
-  //process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/esportspros",
-  "mongodb+srv://Austin:KdND3pfsprtOrMEx@cluster0.giapc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  process.env.MONGODB_URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
